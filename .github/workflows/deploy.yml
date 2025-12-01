@@ -26,6 +26,11 @@ jobs:
     - name: Build
       run: flet publish main.py --base-url /flet-website/
       
+    - name: Remove Flet Logo from Loader
+      run: |
+        # Usuwa obrazek z klasy loading-img w pliku index.html w folderze dist
+        sed -i 's|<img[^>]*class="loading-img"[^>]*>||g' dist/index.html
+      
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
