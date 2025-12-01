@@ -1,0 +1,28 @@
+name: Flet App Deploy
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.13'
+        
+    - name: Install Flet
+      run: pip install flet
+      
+    - name: Build
+      run: flet publish main.py --base-url /flet-website/
+      
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
