@@ -19,17 +19,22 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.13'
+
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'stable'
         
     - name: Install Flet
-      run: pip install "flet==0.25.2"
+      run: pip install flet
       
     - name: Build
-      run: flet build web --base /nazwa-repo/ --web-renderer html
+      run: flet build web main.py --base /flet-website/ --web-renderer html
       
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: ./dist 
+        path: ./build/web
         
     - name: Deploy to GitHub Pages
       uses: actions/deploy-pages@v4
