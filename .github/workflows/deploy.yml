@@ -27,6 +27,9 @@ jobs:
         
     - name: Install Flet
       run: pip install flet
+
+    - name: Debug - List files
+      run: ls -R
       
     - name: Build
       run: flet build web main.py --base /flet-website/ --web-renderer html
