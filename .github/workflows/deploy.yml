@@ -32,7 +32,8 @@ jobs:
       run: ls -R
       
     - name: Build
-      run: flet build web main.py --base /flet-website/ --web-renderer html
+      run: flet build web . --base /flet-website/ --web-renderer html --module-name main
+
       
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
