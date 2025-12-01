@@ -19,22 +19,30 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.13'
-
+        
+    # Instalujemy Fluttera (wymagane dla flet build)
     - name: Setup Flutter
       uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
         
+    # KLUCZOWE: Wymuszamy wersję 0.25.2 (bo 0.28.3 jest zepsuta!)
     - name: Install Flet
-      run: pip install flet
-
-    - name: Debug - List files
-      run: ls -R
+      run: pip install "flet==0.25.2"
       
+    # KLUCZOWE: Budujemy wskazując bieżący katalog (.) jako źródło
+    # Wersja 0.25.2 powinna to łyknąć bez błędu szablonu
     - name: Build
-      run: flet build web . --base /flet-website/ --web-renderer html --module-name main
-
+      run: flet build web . --base /nazwa-repo/ --web-renderer html
       
+    # Optymalizacja loadera
+    - name: Optimize Loading Screen
+      run: |
+        cd build/web
+        sed -i 's|<img class="loading-img".*?>||g' index.html
+        SPINNER='<div class="loader"></div><style>.loader { border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 0 auto; margin-top: 20%; } @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } } body { background-color: #1a1a1a; }</style>'
+        sed -i "s|flt-loading-text\">|flt-loading-text\">$SPINNER|g" index.html || true
+        
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
