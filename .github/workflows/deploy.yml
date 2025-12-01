@@ -21,7 +21,7 @@ jobs:
         python-version: '3.13'
         
     - name: Install Flet
-      run: pip install flet
+      run: pip install "flet==0.25.2"
       
     - name: Build
       run: flet build web --base /nazwa-repo/ --web-renderer html
